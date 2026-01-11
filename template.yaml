@@ -4,29 +4,28 @@ Description: >
   call_postgress
 
   Sample SAM Template for call_postgress
-
 Parameters:
-  PG_HOST:
+  PgHost:
     Type: String
     Description: "PostgreSQL database host"
-    Default: <REPLACE_WITH_PG_HOST>
+    Default: localhost
 
-  PG_PORT:
+  PgPort:
     Type: Number
     Description: "PostgreSQL database port"
     Default: 5432
 
-  PG_DBNAME:
+  PgDbName:
     Type: String
     Description: "PostgreSQL database name"
-    Default: <REPLACE_WITH_DB_NAME>
+    Default: test
 
-  PG_USER:
+  PgUser:
     Type: String
     Description: "PostgreSQL database user"
-    Default: <REPLACE_WITH_DB_USER>
+    Default: postgres
 
-  PG_PASSWORD:
+  PgPassword:
     Type: String
     Description: "PostgreSQL database password"
     NoEcho: true
@@ -39,7 +38,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: handlers/call_postgress/
+      CodeUri: handlers/call_postgres/
       Handler: app.lambda_handler
       Runtime: python3.13
       Architectures:
@@ -47,23 +46,21 @@ Resources:
 
       Environment:
         Variables:
-          PG_HOST: !Ref PG_HOST
-          PG_PORT: !Ref PG_PORT
-          PG_DBNAME: !Ref PG_DBNAME
-          PG_USER: !Ref PG_USER
-          PG_PASSWORD: !Ref PG_PASSWORD
+          PG_HOST: !Ref PgHost
+          PG_PORT: !Ref PgPort
+          PG_DBNAME: !Ref PgDbName
+          PG_USER: !Ref PgUser
+          PG_PASSWORD: !Ref PgPassword
 
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
+      FunctionUrlConfig:
+        AuthType: NONE
+        Cors:
+          AllowOrigins: ["*"]
 
 Outputs:
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/execute/"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn

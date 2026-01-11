@@ -23,9 +23,9 @@ sam build
 
 sam deploy \
   --parameter-overrides \
-    ParameterKey=PG_HOST,ParameterValue=<PG_HOST> \
-    ParameterKey=PG_PORT,ParameterValue=<PG_PORT> \
-    ParameterKey=PG_DBNAME,ParameterValue=<PG_DBNAME> \
-    ParameterKey=PG_USER,ParameterValue=<PG_USER> \
-    ParameterKey=PG_PASSWORD,ParameterValue=<PG_PASSWORD>
+    ParameterKey=PgHost,ParameterValue=<PgHost> \
+    ParameterKey=PgPort,ParameterValue=5432 \
+    ParameterKey=PgDbName,ParameterValue=<PgDbName> \
+    ParameterKey=PgUser,ParameterValue=<PgUser> \
+    ParameterKey=PgPassword,ParameterValue=<PgPassword>
 ```

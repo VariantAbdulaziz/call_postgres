@@ -18,20 +18,19 @@ def lambda_handler(event, context):
             password=os.environ["PG_PASSWORD"],
             connect_timeout=5,
         )
-
+        results = []
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute(sql)
             if cur.description:
                 rows = cur.fetchall()
                 results = rows
-            tables = cur.fetchall()
 
         return {
             "statusCode": 200,
             "headers": {"Content-Type": "application/json"},
             "body": json.dumps({
-                "count": len(tables),
-                "tables": tables
+                "count": len(results),
+                "tables": results
             })
         }
 
