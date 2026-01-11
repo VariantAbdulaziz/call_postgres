@@ -13,7 +13,7 @@ sam build --use-container
 ## 3. Invoke the Lambda Function Locally
 
 ```bash
-sam local invoke HelloWorldFunction --env-vars env.json
+sam local invoke HelloWorldFunction --env-vars env.json --event event.json
 ```
 
 # AWS Deployment

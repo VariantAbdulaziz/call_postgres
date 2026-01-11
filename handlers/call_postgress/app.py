@@ -6,6 +6,7 @@ from psycopg2.extras import RealDictCursor
 
 def lambda_handler(event, context):
     conn = None
+    sql = event["body"] 
 
     try:
 
@@ -19,13 +20,10 @@ def lambda_handler(event, context):
         )
 
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
-            cur.execute("""
-                SELECT table_schema, table_name
-                FROM information_schema.tables
-                WHERE table_type = 'BASE TABLE'
-                  AND table_schema NOT IN ('pg_catalog', 'information_schema')
-                ORDER BY table_schema, table_name;
-            """)
+            cur.execute(sql)
+            if cur.description:
+                rows = cur.fetchall()
+                results = rows
             tables = cur.fetchall()
 
         return {

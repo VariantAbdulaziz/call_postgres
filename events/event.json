@@ -1,0 +1,3 @@
+{
+  "body": "drop table if exists x;\ncreate table x (id serial primary key, some_column varchar);\ninsert into x (some_column) values ('Test');\nselect * from x;"
+}
