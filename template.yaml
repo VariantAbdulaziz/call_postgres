@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  call_postgress
+
+  Sample SAM Template for call_postgress
+
+Parameters:
+  PG_HOST:
+    Type: String
+    Description: "PostgreSQL database host"
+    Default: <REPLACE_WITH_PG_HOST>
+
+  PG_PORT:
+    Type: Number
+    Description: "PostgreSQL database port"
+    Default: 5432
+
+  PG_DBNAME:
+    Type: String
+    Description: "PostgreSQL database name"
+    Default: <REPLACE_WITH_DB_NAME>
+
+  PG_USER:
+    Type: String
+    Description: "PostgreSQL database user"
+    Default: <REPLACE_WITH_DB_USER>
+
+  PG_PASSWORD:
+    Type: String
+    Description: "PostgreSQL database password"
+    NoEcho: true
+
+Globals:
+  Function:
+    Timeout: 30
+
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: handlers/call_postgress/
+      Handler: app.lambda_handler
+      Runtime: python3.13
+      Architectures:
+        - x86_64
+
+      Environment:
+        Variables:
+          PG_HOST: !Ref PG_HOST
+          PG_PORT: !Ref PG_PORT
+          PG_DBNAME: !Ref PG_DBNAME
+          PG_USER: !Ref PG_USER
+          PG_PASSWORD: !Ref PG_PASSWORD
+
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+
+Outputs:
+  HelloWorldApi:
+    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  HelloWorldFunction:
+    Description: "Hello World Lambda Function ARN"
+    Value: !GetAtt HelloWorldFunction.Arn
+  HelloWorldFunctionIamRole:
+    Description: "Implicit IAM Role created for Hello World function"
+    Value: !GetAtt HelloWorldFunctionRole.Arn
